@@ -6,6 +6,6 @@ This is a custom Homebrew tap for official Parallel Works software.
 
 You can add the custom tap on MacOS by running:
 
-```
+```shell
 brew tap parallelworks/brew
 ```

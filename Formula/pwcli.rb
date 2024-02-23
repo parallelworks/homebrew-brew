@@ -20,7 +20,14 @@ class Pwcli < Formula
   def install
     prefix.install Dir["*"]
     system "mkdir", "#{prefix}/bin"
-    system "mv", "#{prefix}/pwcli-darwin-arm64", "#{prefix}/bin/pw"
+
+    if OS.mac? && Hardware::CPU.arm?
+      system "mv", "#{prefix}/pwcli-darwin-arm64", "#{prefix}/bin/pw"
+    end
+
+    if OS.linux? && Hardware::CPU.intel?
+      system "mv", "#{prefix}/pwcli-darwin-amd64", "#{prefix}/bin/pw"
+    end
   end
 
   test do

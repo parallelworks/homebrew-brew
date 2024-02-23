@@ -10,6 +10,7 @@ class Pwcli < Formula
   sha256 "2505b477d0aa0004a346d8fe043a4e2a07db0d16e48a55ca249fdaeca420974a"
 
   def install
+    system "mkdir", "#{bin}/pw"
     bin.install "pw"
   end
 

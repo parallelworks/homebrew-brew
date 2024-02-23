@@ -11,6 +11,8 @@ class Pwcli < Formula
 
   def install
     prefix.install Dir["*"]
+    system "mkdir", "#{prefix}/bin"
+    system "mv", "#{prefix}/pwcli-darwin-arm64", "#{prefix}/bin/pw"
   end
 
   test do

@@ -6,8 +6,8 @@ class Pwcli < Formula
   homepage "https://github.com/parallelworks/homebrew-brew/tree/master"
 
   #What if Hardware::CPU.intel?
-  url "https://github.com/parallelworks/core/releases/download/v4.10.2/pwcli-darwin-arm64", :using => GitHubPrivateRepositoryReleaseDownloadStrategy 
-  sha256 "2505b477d0aa0004a346d8fe043a4e2a07db0d16e48a55ca249fdaeca420974a"
+  url "https://github.com/parallelworks/core/releases/download/v4.14.6/pwcli-darwin-arm64", :using => GitHubPrivateRepositoryReleaseDownloadStrategy 
+  sha256 "61c88eb8a4b09f9f9bd08d77fbd75fb61e3acc0533036ff2f6e86ab648404716"
 
   def install
     prefix.install Dir["*"]

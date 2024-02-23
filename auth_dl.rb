@@ -51,9 +51,9 @@ class GitAuthDlPart < CurlDl
   end
 end
 
-# GitHubPrivateRepositoryReleaseDownloadStrategy downloads tarballs from GitHub
+# GitAuthDl downloads tarballs from GitHub
 # Release assets. To use it, add
-# `:using => GitHubPrivateRepositoryReleaseDownloadStrategy` to the URL section of
+# `:using => GitAuthDl` to the URL section of
 # your formula. This download strategy uses GitHub access tokens (in the
 # environment variables HOMEBREW_GITHUB_API_TOKEN) to sign the request.
 class GitAuthDl < GitAuthDlPart

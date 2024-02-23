@@ -7,8 +7,10 @@ class Pwcli < Formula
   sha256 "2505b477d0aa0004a346d8fe043a4e2a07db0d16e48a55ca249fdaeca420974a"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make", "install"
+    system "mv", "pwcli-darwin-arm64", "#{bin}/pw"
+    system "chmod", "+x", "#{bin}/pw" 
+    #system "./configure", "--prefix=#{prefix}"
+    #system "make", "install"
   end
 
   test do

@@ -1,8 +1,7 @@
 require "download_strategy"
-
-class GitAuthDlPart < CurlDl
-  require "utils/github"
+class GitHubPrivateRepositoryDownloadStrategy < CurlDownloadStrategy
   require "utils/formatter"
+  require "utils/github"
 
   def initialize(url, name, version, **meta)
     super
@@ -12,7 +11,7 @@ class GitAuthDlPart < CurlDl
 
   def parse_url_pattern
     unless match = url.match(%r{https://github.com/([^/]+)/([^/]+)/(\S+)})
-      raise CurlDlErr, "Invalid url pattern for GitHub Repository."
+      raise CurlDownloadStrategyError, "Invalid url pattern for GitHub Repository."
     end
 
     _, @owner, @repo, @filepath = *match
@@ -31,7 +30,7 @@ class GitAuthDlPart < CurlDl
   def set_github_token
     @github_token = ENV["HOMEBREW_GITHUB_API_TOKEN"]
     unless @github_token
-      raise CurlDlErr, "Environmental variable HOMEBREW_GITHUB_API_TOKEN is required."
+      raise CurlDownloadStrategyError, "Environmental variable HOMEBREW_GITHUB_API_TOKEN is required."
     end
 
     validate_github_repository_access!
@@ -47,16 +46,16 @@ class GitAuthDlPart < CurlDl
       HOMEBREW_GITHUB_API_TOKEN can not access the repository: #{@owner}/#{@repo}
       This token may not have permission to access the repository or the url of formula may be incorrect.
     EOS
-    raise CurlDlErr, message
+    raise CurlDownloadStrategyError, message
   end
 end
 
-# GitAuthDl downloads tarballs from GitHub
+# GitHubPrivateRepositoryReleaseDownloadStrategy downloads tarballs from GitHub
 # Release assets. To use it, add
-# `:using => GitAuthDl` to the URL section of
+# `:using => GitHubPrivateRepositoryReleaseDownloadStrategy` to the URL section of
 # your formula. This download strategy uses GitHub access tokens (in the
 # environment variables HOMEBREW_GITHUB_API_TOKEN) to sign the request.
-class GitAuthDl < GitAuthDlPart
+class GitHubPrivateRepositoryReleaseDownloadStrategy < GitHubPrivateRepositoryDownloadStrategy
   def initialize(url, name, version, **meta)
     super
   end
@@ -64,7 +63,7 @@ class GitAuthDl < GitAuthDlPart
   def parse_url_pattern
     url_pattern = %r{https://github.com/([^/]+)/([^/]+)/releases/download/([^/]+)/(\S+)}
     unless @url =~ url_pattern
-      raise CurlDlErr, "Invalid url pattern for GitHub Release."
+      raise CurlDownloadStrategyError, "Invalid url pattern for GitHub Release."
     end
 
     _, @owner, @repo, @tag, @filename = *@url.match(url_pattern)
@@ -89,7 +88,7 @@ class GitAuthDl < GitAuthDlPart
   def resolve_asset_id
     release_metadata = fetch_release_metadata
     assets = release_metadata["assets"].select { |a| a["name"] == @filename }
-    raise CurlDlErr, "Asset file not found." if assets.empty?
+    raise CurlDownloadStrategyError, "Asset file not found." if assets.empty?
 
     assets.first["id"]
   end
@@ -98,4 +97,3 @@ class GitAuthDl < GitAuthDlPart
     GitHub.get_release(@owner, @repo, @tag)
   end
 end
-

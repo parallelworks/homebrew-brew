@@ -26,7 +26,7 @@ class Pwcli < Formula
     end
 
     if OS.linux? && Hardware::CPU.intel?
-      system "mv", "#{prefix}/pwcli-darwin-amd64", "#{prefix}/bin/pw"
+      system "mv", "#{prefix}/pwcli-linux-amd64", "#{prefix}/bin/pw"
     end
   end
 
